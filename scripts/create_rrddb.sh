@@ -21,6 +21,7 @@ for ENTRY in ${DBs} ; do
   TEMP="`echo ${ENTRY} | cut -d ':' -f 4`"
   case TEMP in
     A) AGGR="AVERAGE" ;;
+    L) AGGR="LAST" ;;
     N) AGGR="MIN" ;;
     X) AGGR="MAX" ;;
     *) AGGR="AVERAGE" ;;
