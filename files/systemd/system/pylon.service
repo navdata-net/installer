@@ -1,0 +1,15 @@
+[Unit]
+Description=PylonGPS
+After=network.target
+
+[Service]
+Type=simple
+User=pylon
+WorkingDirectory=/home/pylon
+ExecStart=/usr/local/bin/caster
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+

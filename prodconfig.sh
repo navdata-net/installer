@@ -21,3 +21,13 @@ cat files/ntp.conf | envsubst > /etc/ntp.conf
 # deploy rtklib configuration files
 cp -arv files/rtklib /etc/
 
+
+cp -arv files/systemd/system/* /etc/systemd/system/
+
+systemctl daemon-reload
+
+systemctl enable rtkrcv
+systemctl start rtkrcv
+
+systemctl disable pylon
+

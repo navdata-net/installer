@@ -1,0 +1,15 @@
+[Unit]
+Description=GPS RTK Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/tmp
+ExecStart=/usr/local/bin/rtkrcv -s -o /etc/rtklib/rtkrcv.conf -m 3134 -p 3130
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+
