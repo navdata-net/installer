@@ -1,7 +1,7 @@
 #!/bin/bash
-DBs="LAT:Lat:G:A LON:Lon:G:A HGHT:Hght:G:A FLTSX:FloatX:G:A FLTSY:FloatY:G:A FLTSZ:FloatZ:G:A RSAT:RovSats:G:A BSAT:BasSats:G:A VSAT:ValSatsG:A ARR:ARratio:G:A BLINE:Baseline:G:A DAGE:DiffAge:G:X RTIME:Runtime:C:N"
+DBs="LAT:Lat:G:A LON:Lon:G:A HGHT:Hght:G:A FLTSX:FloatX:G:A FLTSY:FloatY:G:A FLTSZ:FloatZ:G:A RSAT:RovSats:G:A BSAT:BasSats:G:A VSAT:ValSats:G:A ARR:ARratio:G:A BLINE:Baseline:G:A DAGE:DiffAge:G:X RTIME:Runtime:C:N"
 
-RRD_CREATE='create rtkrcv_${DBl}.rrd -s 1 DS:${DESC}:${TYPE}:2:0:360 RRA:${AGGR}:0.5:1:1800 RRA:${AGGR}:0.5:60:1440 RRA:${AGGR}:0.5:3600:672 RRA:${AGGR}:0.5:86400:730'
+RRD_CREATE='create rtkrcv_${DBl}.rrd -s 1 DS:${DESC}:${TYPE}:2:U:U RRA:${AGGR}:0.5:1:1800 RRA:${AGGR}:0.5:60:1440 RRA:${AGGR}:0.5:3600:672 RRA:${AGGR}:0.5:86400:730'
 
 for ENTRY in ${DBs} ; do
   DB="`echo ${ENTRY} | cut -d ':' -f 1`"
@@ -28,6 +28,7 @@ for ENTRY in ${DBs} ; do
   esac
 
   export DB DBl DESC TYPE AGGR
+  echo "${RRD_CREATE}" | envsubst
   echo "${RRD_CREATE}" | envsubst | socat - UNIX-CONNECT:/var/run/rrdcached.sock
   done
 
