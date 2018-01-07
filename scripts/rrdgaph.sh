@@ -6,11 +6,10 @@ DURATIONS="30m 1d 2w 2y"
 export TMPDIR="/tmp"
 export DBDIR="/var/lib/rrdcached/db"
 
-#RRD_GRAPH='rrdtool graph ${TMPDIR}/rtkrcv_${DBl}.png -a PNG --title="RTKRCV ${DESC}" --vertical-label "${UNIT}" "DEF:${DB}=${DBDIR}/rtkrcv_${DBl}.rrd:${DESC}:${AGGR}" "LINE1:${DB}#ff0000:${DESC}" "GPRINT:${DB}:AVERAGE:Average\: %9.6lf${UNIT}"'
-#RRD_GRAPH='rrdtool graph ${TMPDIR}/rtkrcv_${DBl}.png -a PNG --title="RTKRCV ${DESC}" --alt-autoscale "DEF:${DB}=${DBDIR}/rtkrcv_${DBl}.rrd:${DESC}:${AGGR}" "LINE1:${DB}#ff0000:${DESC}" "GPRINT:${DB}:AVERAGE:Average\: %9.6lf${UNIT}"'
-RRD_GRAPH='rrdtool graph ${TMPDIR}/rtkrcv_${DBl}_${DUR}.png -a PNG --end now --start end-${DUR} --title="RTKRCV ${DESC} ${DUR}" --alt-autoscale "DEF:${DB}=${DBDIR}/rtkrcv_${DBl}.rrd:${DESC}:${AGGR}:step=1" "LINE1:${DB}#ff0000:${DESC}" "GPRINT:${DB}:AVERAGE:Average\: %9.6lf${UNIT}"'
+RRD_GRAPH='rrdtool graph ${TMPDIR}/rtkrcv_${DBl}_${DUR}.png -a PNG --end now --start end-${DUR} --alt-autoscale "DEF:${DB}=${DBDIR}/rtkrcv_${DBl}.rrd:${DESC}:${AGGR}:step=1" "LINE1:${DB}#ff0000:${DESC}" "GPRINT:${DB}:AVERAGE:Average\: %9.6lf${UNIT}"'
 
 echo FLUSHALL | socat - UNIX-CONNECT:/var/run/rrdcached.sock
+sleep 10
 
 for ENTRY in ${DBs} ; do
   DB="`echo ${ENTRY} | cut -d ':' -f 1`"
