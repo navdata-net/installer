@@ -1,0 +1,60 @@
+#! /bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/rtkrcv
+NAME=rtkrcv
+DESC=rtkrcv
+PID=/run/rtkrcv.pid
+
+CWD="`pwd`"
+
+test -x $DAEMON || exit 0
+
+# Include defaults if available
+if [ -f /etc/default/$NAME ] ; then
+        . /etc/default/$NAME
+fi
+
+set -e
+
+cd /tmp
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --start --quiet --pidfile $PID \
+                -n $NAME -x $DAEMON -m -b -- $DAEMON_OPTS
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon -K --quiet --pidfile $PID \
+                -n $NAME
+        [ -f $PID ] && rm -f $PID
+        echo "$NAME."
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon -K --quiet --pidfile $PID \
+                -n $NAME
+        [ -f $PID ] && rm -f $PID
+        sleep 1
+        start-stop-daemon --start --quiet --pidfile $PID \
+                -n $NAME -x $DAEMON -m -b -- $DAEMON_OPTS
+        echo "$NAME."
+        ;;
+  reload)
+      echo -n "Reloading $DESC configuration: "
+      start-stop-daemon --stop --signal HUP --quiet --pidfile $PID \
+          --exec $DAEMON
+      echo "$NAME."
+      ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+cd "${CWD}"
+
+exit 0

@@ -1,0 +1,1 @@
+DAEMON_OPTS="-read_tcp 127.0.0.1 3131 -output_caster pylon.navdata.net 10001 10002 10003 10004 10005 10006 -output_basestation 0.0 0.0 RAW D_UB_0000.000_Unconfigured 1"

@@ -1,0 +1,2 @@
+DAEMON_OPTS="-s -o /etc/rtklib/rtkrcv.conf -m 3134 -p 3130"
+
